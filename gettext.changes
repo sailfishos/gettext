@@ -1,3 +1,6 @@
+* Tue Jan 07 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
+- Add gets deprecation and aarch64 support.
+
 * Mon Jul 12 2010 Yan Li <yan.i.li@intel.com> - 0.18.1.1
 - Split package according to upstream PACKAGING advice: gettext is
   split into two packages: gettext-libs and gettext-devel.

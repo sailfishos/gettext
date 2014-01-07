@@ -18,6 +18,8 @@ Url:            http://www.gnu.org/software/gettext/
 Group:          Development/Tools
 Source:         ftp://ftp.gnu.org/gnu/gettext/%{name}-%{version}.tar.gz
 Source2:        msghack.py
+Patch0:		gettext-aarch64.patch
+Patch1:		gettext-gets-aarch64.patch
 
 BuildRequires:  autoconf >= 2.5
 BuildRequires:  bison
@@ -74,7 +76,8 @@ This package contains libraries used internationalization support.
 
 %prep
 %setup -q
-
+%patch0 -p1
+%patch1 -p1
 
 %build
 [ -f  %{_datadir}/automake/depcomp ] && cp -f %{_datadir}/automake/{depcomp,ylwrap} .
