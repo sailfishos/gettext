@@ -1,3 +1,6 @@
+* Tue Feb 17 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
+- Add .sig file as source file.
+
 * Tue Jan 07 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
 - Add gets deprecation and aarch64 support.
 

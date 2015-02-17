@@ -18,6 +18,7 @@ Url:            http://www.gnu.org/software/gettext/
 Group:          Development/Tools
 Source:         ftp://ftp.gnu.org/gnu/gettext/%{name}-%{version}.tar.gz
 Source2:        msghack.py
+Source3:	%{name}-%{version}.tar.gz.sig
 Patch0:		gettext-aarch64.patch
 Patch1:		gettext-gets-aarch64.patch
 
