@@ -117,7 +117,7 @@ GNULIB_SRCDIR=../gnulib/ ./autogen.sh --no-git
     --disable-curses \
     --disable-csharp %addconfflag
 
-make GCJFLAGS="-findirect-dispatch"
+make %{?jobs:-j%jobs} GCJFLAGS="-findirect-dispatch"
 
 
 %install
