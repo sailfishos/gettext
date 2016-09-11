@@ -117,8 +117,9 @@ GNULIB_SRCDIR=../gnulib/ ./autogen.sh --no-git
     --disable-curses \
     --disable-csharp %addconfflag
 
-make %{?jobs:-j%jobs} GCJFLAGS="-findirect-dispatch"
-
+# TODO: %{?jobs:-j%jobs} is removed here as the build fails to following error with it.
+# make[4]: *** No rule to make target `cldr-plural.h', needed by `all'.  Stop.
+make GCJFLAGS="-findirect-dispatch"
 
 %install
 make install DESTDIR=%{buildroot} INSTALL="%{__install} -p" \
