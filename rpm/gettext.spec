@@ -101,7 +101,7 @@ cp ../archive.dir.tar.xz gettext-tools/misc
 GNULIB_SRCDIR=../gnulib/ ./autogen.sh --no-git
 [ -f %{_datadir}/automake/depcomp ] && cp -f %{_datadir}/automake/{depcomp,ylwrap} .
 
-%ifarch %arm
+%ifarch %arm aarch64
 # We add a compile flag for ARM to deal with a bug in qemu (msgmerge using pthread/gomp)
 # msgmerge will lockup during execution.
 %define addconfflag --without-libpth-prefix --disable-openmp
