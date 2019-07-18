@@ -69,10 +69,15 @@ users.  This gettext package is a meta-package that depends on
 gettext-devel for transition.
 
 %package devel
-License:        GPLv3+
+# autopoint is GPLv3+
+# libasprintf is LGPLv2+
+# libgettextpo is GPLv3+
+License:        LGPLv2+ and GPLv3+
 Summary:        Development files for %{name}
 Group:          Development/Tools
-Requires:       %{name}-libs = %{version}
+Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}-libs = %{version}-%{release}
+Requires:       xz
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 
@@ -83,7 +88,9 @@ internationalization capability. You also need this package if you
 want to add gettext support for your project.
 
 %package libs
-License:        LGPLv2+
+# libasprintf is LGPLv2+
+# libgettextpo is GPLv3+
+License:        LGPLv2+ and GPLv3+
 Summary:        Libraries for %{name}
 Group:          System/Libraries
 
