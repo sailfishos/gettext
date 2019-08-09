@@ -18,6 +18,7 @@ Url:            http://www.gnu.org/software/gettext/
 Group:          Development/Tools
 Source:         ftp://ftp.gnu.org/gnu/gettext/%{name}-%{version}.tar.gz
 Source2:        msghack.py
+Patch0:         0001-Remove-html-docs.patch
 
 # Bootstrapping
 BuildRequires:  autoconf >= 2.5
@@ -99,6 +100,7 @@ This package contains libraries used internationalization support.
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
+%patch0 -p1
 
 %build
 echo %{version} | cut -d '+' -f 1 > .tarball-version
@@ -219,7 +221,7 @@ fi
 %defattr(-,root,root,-)
 %doc NEWS THANKS
 %doc COPYING gettext-tools/misc/DISCLAIM README
-%doc gettext-runtime/man/*.3.html ChangeLog
+%doc ChangeLog
 %doc %{_infodir}/autosprintf*
 %doc %{_infodir}/gettext*
 %doc gettext-runtime/intl-java/javadoc*
@@ -300,6 +302,5 @@ fi
 %doc %{_mandir}/man1/gettext.1.gz
 %doc %{_mandir}/man1/ngettext.1.gz
 %doc %{_mandir}/man1/envsubst.1.gz
-%doc gettext-runtime/man/*.1.html
 %doc %{_mandir}/man3/*
 %{_libdir}/libasprintf.so.*
