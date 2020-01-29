@@ -1,0 +1,39 @@
+From 8197576b2b777f0702d7553dc0ec5983e87a113b Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Thu, 12 Mar 2020 06:41:09 +0000
+Subject: [PATCH 5/5] Disable man and doc from libasprintf
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ gettext-runtime/libasprintf/Makefile.am | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+diff --git a/gettext-runtime/libasprintf/Makefile.am b/gettext-runtime/libasprintf/Makefile.am
+index 4189ef1a1..917a761c6 100644
+--- a/gettext-runtime/libasprintf/Makefile.am
++++ b/gettext-runtime/libasprintf/Makefile.am
+@@ -112,21 +112,6 @@ clean-local:
+ 	rm -rf SunWS_cache
+ 
+ 
+-# Documentation.
+-
+-# List of -I options referring to directories that contain texinfo sources
+-# used by this directory.
+-# Should contain at least one -I option, to work around a bug in texi2dvi 1.13,
+-# see <https://lists.gnu.org/archive/html/bug-automake/2009-04/msg00029.html>.
+-TEXINCLUDES = -I .
+-
+-MAKEINFO = env LANG= LC_MESSAGES= LC_ALL= LANGUAGE= @MAKEINFO@
+-MAKEINFOFLAGS = $(TEXINCLUDES) --no-split
+-
+-info_TEXINFOS = autosprintf.texi
+-# List of texinfo sources @included by autosprintf.texi.
+-autosprintf_TEXINFOS = lgpl.texi gpl.texi fdl.texi
+-
+ # We distribute only the HTML documentation.
+ # The user can generate the others, via
+ #   make autosprintf.ps
+-- 
+2.25.0
+

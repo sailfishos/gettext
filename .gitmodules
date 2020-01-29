@@ -1,6 +1,6 @@
 [submodule "gettext"]
 	path = gettext
-	url = https://git.merproject.org/mirror/gettext.git
+	url = https://git.sailfishos.org/mirror/gettext.git
 [submodule "gnulib"]
 	path = gnulib
-	url = https://git.merproject.org/mirror/gnulib.git
+	url = https://git.sailfishos.org/mirror/gnulib.git
