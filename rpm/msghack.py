@@ -1,13 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ## -*- coding: utf-8 -*-
-## Copyright (C) 2001 Red Hat, Inc.
+## Copyright (C) 2001, 2004, 2008, 2012 Red Hat, Inc.
 ## Copyright (C) 2001 Trond Eivind Glomsrød <teg@redhat.com>
 
-## v0.2 - 2001-08-21
-
-## This program is free software; you can redistribute it and/or modify
+## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
+## the Free Software Foundation, either version 3 of the License, or
 ## (at your option) any later version.
 
 ## This program is distributed in the hope that it will be useful,
@@ -16,14 +14,12 @@
 ## GNU General Public License for more details.
 
 ## You should have received a copy of the GNU General Public License
-## along with this program; if not, write to the Free Software
-## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 """
 A msghack replacement
 """
 
-import string
 import sys
 
 class GTMessage:
@@ -38,8 +34,8 @@ class GTMessage:
         @message The message
         @id The messageid associated with the object
         """
-        self._message=string.strip(message)
-        self._id=string.strip(id)
+        self._message=message.strip()
+        self._id=id.strip()
         self._refs=[]
         for ref in refs:
             self._refs.append(ref)
@@ -181,7 +177,7 @@ class GTFile:
                 msgar.append(GTMessage(message._id,message._message,message._refs))
                 continue
             msg=GTMessage(message._message,message._id,message._refs)
-            if not msght.has_key(msg._id):
+            if msg._id not in msght:
                 msght[msg._id]=msg
                 msgar.append(msg)
             else:
@@ -202,7 +198,7 @@ class GTFile:
         res=""
         for message in self._messages:
             msgid=message._id
-            if msgids.has_key(msgid):
+            if msgid in msgids:
                 res=res+"Duplicate: %s\n" % (msgid)
             else:
                 msgids[msgid]=1
@@ -262,12 +258,12 @@ class GTFile:
         inmsgstr=0
         templines=file.readlines()
         for line in templines:
-            lines.append(string.strip(line))
+            lines.append(line.strip())
         for line in lines:
-            pos=string.find(line,'"')
-            pos2=string.rfind(line,'"')
+            pos=line.find('"')
+            pos2=line.rfind('"')
             if line and line[0]=="#":
-                refs.append(string.strip(line))
+                refs.append(line.strip())
             if inmsgstr==0 and line[:6]=="msgstr":
                 msgstr=""
                 inmsgstr=1
@@ -343,15 +339,35 @@ class GTMaster:
             res=res+str(message)+"\n"
         return res
 
+def printUsage():
+    "Print the usage messages"
+    print("Usage: " + str(sys.argv[0]) + " [OPTION] file.po [ref.po]\n\
+This program can be used to alter .po files in ways no sane mind would think about.\n\
+    -o                result will be written to FILE\n\
+    --invert          invert a po file by switching msgid and msgstr\n\
+    --master          join any number of files in a master-formatted catalog\n\
+    --empty           empty the contents of the .po file, creating a .pot\n\
+    --append          append entries from ref.po that don't exist in file.po\n\
+\n\
+Note: It is just a replacement of msghack for backward support.\n")
+
 
 if __name__=="__main__":
     output=None
     res=None
     if("-o") in sys.argv:
+        if (len(sys.argv)<=sys.argv.index("-o")+1):
+                print("file.po and ref.po are not specified!\n")
+                printUsage()
+                exit(1)
         output=sys.argv[sys.argv.index("-o")+1]
         sys.argv.remove("-o")
         sys.argv.remove(output)
     if("--invert") in sys.argv:
+        if (len(sys.argv)<=sys.argv.index("--invert")+1):
+            print("file.po is not specified!\n")
+            printUsage()
+            exit(1)
         file=sys.argv[sys.argv.index("--invert")+1]
         gtf=GTFile(file)
         res1=gtf.msgidDupes()
@@ -360,10 +376,18 @@ if __name__=="__main__":
             sys.exit(1)
         res=str(gtf.invertedStrings())
     elif("--empty") in sys.argv:
+        if (len(sys.argv)<=sys.argv.index("--empty")+1):
+            print("file.po is not specified!\n")
+            printUsage()
+            exit(1)
         file=sys.argv[sys.argv.index("--empty")+1]
         gtf=GTFile(file)
         res=str(gtf.emptyMsgStrings())
     elif("--master") in sys.argv:
+        if (len(sys.argv)<=sys.argv.index("--master")+1):
+            print("file.po is not specified!\n")
+            printUsage()
+            exit(1)
         loc=sys.argv.index("--master")+1
         gtfs=[]
         for file in sys.argv[loc:]:
@@ -371,6 +395,10 @@ if __name__=="__main__":
         master=GTMaster(gtfs)
         res=str(master)
     elif("--append") in sys.argv:
+        if (len(sys.argv)<=sys.argv.index("--append")+2):
+            print("file.po and/or ref.po are not specified!\n")
+            printUsage()
+            exit(1)
         file=sys.argv[sys.argv.index("--append")+1]
         file2=sys.argv[sys.argv.index("--append")+2]
         gtf=GTFile(file)
@@ -378,21 +406,11 @@ if __name__=="__main__":
         gtf.append(gtf2)
         res=str(gtf)
     else:
-        #print "Not implemented: "+str(sys.argv)
-        print "\
-Usage: ", str(sys.argv[0])," [OPTION] file.po [ref.po]\n\
-This program can be used to alter .po files in ways no sane mind would think about.\n\
-      -o                result will be written to FILE\n\
-      --invert          invert a po file by switching msgid and msgstr\n\
-      --master          join any number of files in a master-formatted catalog\n\
-      --empty           empty the contents of the .po file, creating a .pot\n\
-      --append          append entries from ref.po that don't exist in file.po\n\
-\n\
-Note: It is just a replacement of msghack for backward support.\n\
-"
+        #print("Not implemented: "+str(sys.argv))
+        printUsage()
         sys.exit(1)
     if not output:
-        print res
+        print(res)
     else:
         file=open(output,"w")
         file.write(res)

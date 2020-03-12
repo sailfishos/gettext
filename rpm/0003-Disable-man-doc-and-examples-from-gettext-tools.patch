@@ -1,0 +1,26 @@
+From 42e5c6fb5808b56338b41242385f11fc1b37c937 Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Thu, 5 Mar 2020 09:48:16 +0000
+Subject: [PATCH 3/5] Disable man, doc and examples from gettext-tools
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ gettext-tools/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gettext-tools/Makefile.am b/gettext-tools/Makefile.am
+index 449a79754..6658e7ca6 100644
+--- a/gettext-tools/Makefile.am
++++ b/gettext-tools/Makefile.am
+@@ -19,7 +19,7 @@
+ AUTOMAKE_OPTIONS = 1.5 gnu no-dependencies
+ ACLOCAL_AMFLAGS = -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
+ 
+-SUBDIRS = intl gnulib-lib libgrep src libgettextpo po its projects styles emacs misc man m4 tests system-tests gnulib-tests examples doc
++SUBDIRS = intl gnulib-lib libgrep src libgettextpo po its projects styles emacs misc m4 tests system-tests gnulib-tests
+ 
+ EXTRA_DIST = misc/DISCLAIM
+ MOSTLYCLEANFILES = core *.stackdump
+-- 
+2.25.0
+

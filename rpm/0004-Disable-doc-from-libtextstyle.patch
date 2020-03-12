@@ -1,0 +1,26 @@
+From b1fa6119f15a3b46d98b2a25c27ee93463f56597 Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Thu, 5 Mar 2020 09:48:52 +0000
+Subject: [PATCH 4/5] Disable doc from libtextstyle
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ libtextstyle/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libtextstyle/Makefile.am b/libtextstyle/Makefile.am
+index 5d9611343..e49e1033b 100644
+--- a/libtextstyle/Makefile.am
++++ b/libtextstyle/Makefile.am
+@@ -20,7 +20,7 @@ AUTOMAKE_OPTIONS = 1.13 gnu no-dependencies
+ ACLOCAL_AMFLAGS = -I m4 -I gnulib-m4
+ 
+ # The list of subdirectories containing Makefiles.
+-SUBDIRS = doc lib tests adhoc-tests
++SUBDIRS = lib tests adhoc-tests
+ 
+ EXTRA_DIST = \
+   version.sh \
+-- 
+2.25.0
+

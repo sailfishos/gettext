@@ -1,0 +1,26 @@
+From fc3dc69c8ae2bcc0d0690b69a6c6d1f7cad7dac3 Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Thu, 5 Mar 2020 09:46:38 +0000
+Subject: [PATCH 2/5] Disable man and doc from gettext-runtime
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ gettext-runtime/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gettext-runtime/Makefile.am b/gettext-runtime/Makefile.am
+index 0a8e7d9d5..d7152602c 100644
+--- a/gettext-runtime/Makefile.am
++++ b/gettext-runtime/Makefile.am
+@@ -27,7 +27,7 @@ SUBDIR_libasprintf = libasprintf
+ else
+ SUBDIR_libasprintf =
+ endif
+-SUBDIRS = doc intl intl-java intl-csharp gnulib-lib $(SUBDIR_libasprintf) src po man m4 tests
++SUBDIRS = intl intl-java intl-csharp gnulib-lib $(SUBDIR_libasprintf) src po m4 tests
+ 
+ EXTRA_DIST = BUGS
+ 
+-- 
+2.25.0
+

@@ -10,18 +10,23 @@
 %define enable_testing 0
 
 Name:           gettext
-Version:        0.19.8.1
+Version:        0.20.1
 Release:        1
-License:        GPLv3+ and LGPLv2+
+License:        GPLv3+ and LGPLv2+ and GFDL
 Summary:        GNU libraries and utilities for producing multi-lingual messages
 Url:            http://www.gnu.org/software/gettext/
-Group:          Development/Tools
-Source:         ftp://ftp.gnu.org/gnu/gettext/%{name}-%{version}.tar.gz
+Source:         %{name}-%{version}.tar.gz
 Source2:        msghack.py
-Patch0:         0001-Remove-html-docs.patch
+Patch0:         gettext-msgmerge-for-msgfmt.patch
+Patch1:         0001-Export-GNULIB_TOOL-for-libtextstyle-autogen.sh.patch
+Patch2:         0002-Disable-man-and-doc-from-gettext-runtime.patch
+Patch3:         0003-Disable-man-doc-and-examples-from-gettext-tools.patch
+Patch4:         0004-Disable-doc-from-libtextstyle.patch
+Patch5:         0005-Disable-man-and-doc-from-libasprintf.patch
 
 # Bootstrapping
-BuildRequires:  autoconf >= 2.5
+BuildRequires:  autoconf >= 2.62
+BuildRequires:  automake
 BuildRequires:  bison >= 3.0
 BuildRequires:  libtool
 
@@ -29,9 +34,6 @@ BuildRequires:  gcc-c++
 
 # Needed to gettext-tools/gnulib-lib/Makefile etc.
 BuildRequires:  gperf
-
-# makeinfo is required for build
-BuildRequires:  texinfo
 
 # need expat for xgettext on glade
 BuildRequires:  pkgconfig(expat)
@@ -46,9 +48,6 @@ BuildRequires:  pkgconfig(expat)
 BuildRequires: gettext-devel
 
 Requires:       %{name}-devel = %{version}
-
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 
 %description
 The GNU gettext package provides a set of tools and documentation for
@@ -78,9 +77,9 @@ Summary:        Development files for %{name}
 Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-libs = %{version}-%{release}
+Requires:       libtextstyle = %{version}-%{release}
 Requires:       xz
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
+Requires:       diffutils
 
 %description devel
 This package contains all development related files necessary for
@@ -98,23 +97,34 @@ Group:          System/Libraries
 %description libs
 This package contains libraries used internationalization support.
 
+%package -n libtextstyle
+Summary: Text styling library
+License: GPLv3+
+
+%description -n libtextstyle
+Library for producing styled text to be displayed in a terminal
+emulator.
+
+%package -n libtextstyle-devel
+Summary: Development files for libtextstyle
+License: GPLv3+ and GFDL
+Requires: libtextstyle%{?_isa} = %{version}-%{release}
+
+%description -n libtextstyle-devel
+This package contains all development related files necessary for
+developing or compiling applications/libraries that needs text
+styling.
+
 %prep
-%setup -q -n %{name}-%{version}/%{name}
-%patch0 -p1
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 echo %{version} | cut -d '+' -f 1 > .tarball-version
 cp .tarball-version .version
 cp ../archive.dir.tar.xz gettext-tools/misc
 
-GNULIB_SRCDIR=../gnulib/ ./autogen.sh --no-git
+GNULIB_SRCDIR=../gnulib/ ./autogen.sh
 [ -f %{_datadir}/automake/depcomp ] && cp -f %{_datadir}/automake/{depcomp,ylwrap} .
-
-%ifarch %arm aarch64
-# We add a compile flag for ARM to deal with a bug in qemu (msgmerge using pthread/gomp)
-# msgmerge will lockup during execution.
-%define addconfflag --without-libpth-prefix --disable-openmp
-%endif
 
 %configure --without-included-gettext \
     --enable-nls \
@@ -124,49 +134,35 @@ GNULIB_SRCDIR=../gnulib/ ./autogen.sh --no-git
     --with-included-glib \
     --with-included-libxml \
     --disable-curses \
-    --disable-csharp %addconfflag
+    --disable-csharp \
+    --disable-rpath \
+    --disable-java \
+    --disable-native-java
 
-# TODO: %{?jobs:-j%jobs} is removed here as the build fails to following error with it.
-# make[4]: *** No rule to make target `cldr-plural.h', needed by `all'.  Stop.
-make GCJFLAGS="-findirect-dispatch"
+%make_build
 
 %install
-make install DESTDIR=%{buildroot} INSTALL="%{__install} -p" \
-    lispdir=%{_datadir}/emacs/site-lisp \
+%make_install \
+    lispdir=%{_datadir}/emacs/site-lisp/gettext \
     aclocaldir=%{_datadir}/aclocal EXAMPLESFILES=""
-
-# move gettext to /bin
-mkdir -p %{buildroot}/bin
-mv %{buildroot}%{_bindir}/gettext %{buildroot}/bin
-ln -s ../../bin/gettext %{buildroot}%{_bindir}/gettext
 
 install -pm 755 %SOURCE2 %{buildroot}%{_bindir}/msghack
 
 # make preloadable_libintl.so executable
-chmod 755 %{buildroot}%{_libdir}/preloadable_libintl.so
+chmod 755 ${RPM_BUILD_ROOT}%{_libdir}/preloadable_libintl.so
 
-rm -f %{buildroot}%{_infodir}/dir
-
-# doc relocations
-for i in gettext-runtime/man/*.html; do
-  rm %{buildroot}%{_datadir}/doc/gettext/`basename $i`
-done
-rm -r %{buildroot}%{_datadir}/doc/gettext/javadoc*
-
-rm -rf %{buildroot}%{_datadir}/doc/gettext/examples
+rm -f ${RPM_BUILD_ROOT}%{_infodir}/dir
 
 rm -rf htmldoc
 mkdir htmldoc
-mv %{buildroot}%{_datadir}/doc/gettext/* %{buildroot}%{_datadir}/doc/libasprintf/* htmldoc
-rm -r %{buildroot}%{_datadir}/doc/libasprintf
-rm -r %{buildroot}%{_datadir}/doc/gettext
+mv ${RPM_BUILD_ROOT}%{_datadir}/doc/gettext/* htmldoc
+rm -r ${RPM_BUILD_ROOT}%{_datadir}/doc/gettext
 
 # own this directory for third-party *.its files
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%{name}/its
+mkdir -p ${RPM_BUILD_ROOT}%{_datadir}/%{name}/its
 
-# remove unpackaged files from the buildroot
-rm -rf %{buildroot}%{_datadir}/emacs
-rm %{buildroot}%{_libdir}/lib*.la
+# remove internal .so lib files
+rm ${RPM_BUILD_ROOT}%{_libdir}/libgettext{src,lib}.so
 
 %find_lang %{name}-runtime
 %find_lang %{name}-tools
@@ -177,30 +173,11 @@ cat %{name}-*.lang > %{name}.lang
 make check
 %endif
 
-%define install_info /sbin/install-info
-%define remove_install_info /sbin/install-info --delete
-
-%post
-/sbin/ldconfig
-[ -e %{_infodir}/gettext.info.gz ] && %{install_info} %{_infodir}/gettext.info.gz %{_infodir}/dir || :
-
-%preun
-if [ "$1" = 0 ]; then
-    [ -e %{_infodir}/gettext.info.gz ] && %{remove_install_info} %{_infodir}/gettext.info.gz %{_infodir}/dir || :
-fi
-exit 0
+%post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
-%post devel
-/sbin/ldconfig
-[ -e %{_infodir}/autosprintf.info ] && %{install_info} %{_infodir}/autosprintf.info %{_infodir}/dir || :
-
-%preun devel
-/sbin/ldconfig
-if [ "$1" = 0 ]; then
-    [ -e %{_infodir}/autosprintf.info ] && %{remove_install_info} %{_infodir}/autosprintf.info %{_infodir}/dir || :
-fi
+%post devel -p /sbin/ldconfig
 
 %postun devel -p /sbin/ldconfig
 
@@ -208,9 +185,17 @@ fi
 
 %postun libs -p /sbin/ldconfig
 
+%post -n libtextstyle -p /sbin/ldconfig
+
+%postun -n libtextstyle -p /sbin/ldconfig
+
+%post -n libtextstyle-devel -p /sbin/ldconfig
+
+%postun -n libtextstyle-devel -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root,-)
+%license COPYING
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/its
 %{_datadir}/%{name}-*/its
@@ -222,31 +207,9 @@ fi
 %doc NEWS THANKS
 %doc COPYING gettext-tools/misc/DISCLAIM README
 %doc ChangeLog
-%doc %{_infodir}/autosprintf*
-%doc %{_infodir}/gettext*
-%doc gettext-runtime/intl-java/javadoc*
-%doc %{_mandir}/man1/autopoint.1.gz
-%doc %{_mandir}/man1/gettextize.1.gz
-%doc %{_mandir}/man1/msgattrib.1.gz
-%doc %{_mandir}/man1/msgcat.1.gz
-%doc %{_mandir}/man1/msgcmp.1.gz
-%doc %{_mandir}/man1/msgcomm.1.gz
-%doc %{_mandir}/man1/msgconv.1.gz
-%doc %{_mandir}/man1/msgen.1.gz
-%doc %{_mandir}/man1/msgexec.1.gz
-%doc %{_mandir}/man1/msgfilter.1.gz
-%doc %{_mandir}/man1/msgfmt.1.gz
-%doc %{_mandir}/man1/msggrep.1.gz
-%doc %{_mandir}/man1/msginit.1.gz
-%doc %{_mandir}/man1/msgmerge.1.gz
-%doc %{_mandir}/man1/msgunfmt.1.gz
-%doc %{_mandir}/man1/msguniq.1.gz
-%doc %{_mandir}/man1/recode-sr-latin.1.gz
-%doc %{_mandir}/man1/xgettext.1.gz
 %{_datadir}/%{name}/projects/
 %{_datadir}/%{name}/config.rpath
 %{_datadir}/%{name}/*.h
-%{_datadir}/%{name}/intl
 %{_datadir}/%{name}/po
 %{_datadir}/%{name}/msgunfmt.tcl
 %{_datadir}/aclocal/*
@@ -294,13 +257,17 @@ fi
 %doc AUTHORS gettext-runtime/BUGS
 %doc gettext-runtime/intl/COPYING*
 %doc %{_datadir}/gettext/ABOUT-NLS
-/bin/gettext
 %{_bindir}/gettext
 %{_bindir}/ngettext
 %{_bindir}/envsubst
 %{_bindir}/gettext.sh
-%doc %{_mandir}/man1/gettext.1.gz
-%doc %{_mandir}/man1/ngettext.1.gz
-%doc %{_mandir}/man1/envsubst.1.gz
-%doc %{_mandir}/man3/*
 %{_libdir}/libasprintf.so.*
+
+%files -n libtextstyle
+%{_libdir}/libtextstyle.so.0*
+
+%files -n libtextstyle-devel
+%license libtextstyle/COPYING
+%{_includedir}/textstyle/
+%{_includedir}/textstyle.h
+%{_libdir}/libtextstyle.so

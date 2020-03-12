@@ -1,0 +1,26 @@
+From e6048a8645b8edb2875605970bb330b841a108ce Mon Sep 17 00:00:00 2001
+From: Matti Kosola <matti.kosola@jolla.com>
+Date: Thu, 5 Mar 2020 09:45:17 +0000
+Subject: [PATCH 1/5] Export GNULIB_TOOL for libtextstyle autogen.sh
+
+Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
+---
+ autogen.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/autogen.sh b/autogen.sh
+index 5c28b6fd3..eb980897c 100755
+--- a/autogen.sh
++++ b/autogen.sh
+@@ -413,7 +413,7 @@ cd "$dir0"
+ 
+ echo "$0: generating files in libtextstyle..."
+ cd libtextstyle
+-./autogen.sh $skip_gnulib_option || exit $?
++GNULIB_TOOL=$GNULIB_TOOL ./autogen.sh $skip_gnulib_option || exit $?
+ cd "$dir0"
+ 
+ echo "$0: generating configure in gettext-tools/examples..."
+-- 
+2.25.0
+
