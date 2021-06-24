@@ -167,6 +167,7 @@ rm ${RPM_BUILD_ROOT}%{_libdir}/libgettext{src,lib}.so
 %find_lang %{name}-runtime
 %find_lang %{name}-tools
 cat %{name}-*.lang > %{name}.lang
+find ${RPM_BUILD_ROOT} -regex '.*\.la$' | xargs rm -f --
 
 %check
 %if %{enable_testing}
