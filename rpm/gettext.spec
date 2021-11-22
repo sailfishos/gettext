@@ -10,7 +10,7 @@
 %define enable_testing 0
 
 Name:           gettext
-Version:        0.20.2
+Version:        0.21
 Release:        1
 License:        GPLv3+ and LGPLv2+ and GFDL
 Summary:        GNU libraries and utilities for producing multi-lingual messages
@@ -28,6 +28,7 @@ BuildRequires:  autoconf >= 2.62
 BuildRequires:  automake
 BuildRequires:  bison >= 3.0
 BuildRequires:  libtool
+BuildRequires:  xz
 
 BuildRequires:  gcc-c++
 
@@ -121,6 +122,7 @@ styling.
 echo %{version} | cut -d '+' -f 1 > .tarball-version
 cp .tarball-version .version
 cp ../archive.dir.tar.xz gettext-tools/misc
+mkdir -p libtextstyle/build-aux
 cp ../gnulib/build-aux/texinfo.tex libtextstyle/build-aux/
 
 GNULIB_SRCDIR=$(pwd)/../gnulib/ ./autogen.sh

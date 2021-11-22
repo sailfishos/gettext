@@ -1,4 +1,4 @@
-* Tue Feb 17 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
+* Mon Feb 17 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
 - Add .sig file as source file.
 
 * Tue Jan 07 2014 Carsten Munk <carsten.munk@jolla.com> - 0.18.1.1
@@ -16,7 +16,7 @@
 - Updated to latest upstream release
 - Patch gettext-0.17-open-args.patch dropped, already in upstream
 
-* Mon Jun 05 2010 Jan-Simon Möller <jsmoeller@linuxfoundation.org> - 0.17
+* Sat Jun 05 2010 Jan-Simon Möller <jsmoeller@linuxfoundation.org> - 0.17
 - Disable pthread and openmp usage on ARM because of qemu-arm threading bug.
 
 * Wed Mar 31 2010 Yan Li <yan.i.li@intel.com> - 0.17
