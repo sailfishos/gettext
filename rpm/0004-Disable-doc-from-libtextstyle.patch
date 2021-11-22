@@ -16,7 +16,7 @@ index 5d9611343..e49e1033b 100644
  ACLOCAL_AMFLAGS = -I m4 -I gnulib-m4
  
  # The list of subdirectories containing Makefiles.
--SUBDIRS = doc lib tests adhoc-tests
+-SUBDIRS = lib tests adhoc-tests doc
 +SUBDIRS = lib tests adhoc-tests
  
  EXTRA_DIST = \
