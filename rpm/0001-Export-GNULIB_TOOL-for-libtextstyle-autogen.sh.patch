@@ -13,14 +13,14 @@ index 5c28b6fd3..eb980897c 100755
 --- a/autogen.sh
 +++ b/autogen.sh
 @@ -413,7 +413,7 @@ cd "$dir0"
- 
  echo "$0: generating files in libtextstyle..."
  cd libtextstyle
--./autogen.sh $skip_gnulib_option || exit $?
-+GNULIB_TOOL=$GNULIB_TOOL ./autogen.sh $skip_gnulib_option || exit $?
+ (if ! $skip_gnulib; then export GNULIB_SRCDIR; fi
+- ./autogen.sh $skip_gnulib_option
++ GNULIB_TOOL=$GNULIB_TOOL ./autogen.sh $skip_gnulib_option
+ ) || exit $?
  cd "$dir0"
  
- echo "$0: generating configure in gettext-tools/examples..."
 -- 
 2.25.0
 

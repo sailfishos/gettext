@@ -10,14 +10,13 @@
 %define enable_testing 0
 
 Name:           gettext
-Version:        0.20.1
+Version:        0.21
 Release:        1
 License:        GPLv3+ and LGPLv2+ and GFDL
 Summary:        GNU libraries and utilities for producing multi-lingual messages
 Url:            http://www.gnu.org/software/gettext/
 Source:         %{name}-%{version}.tar.gz
 Source2:        msghack.py
-Patch0:         gettext-msgmerge-for-msgfmt.patch
 Patch1:         0001-Export-GNULIB_TOOL-for-libtextstyle-autogen.sh.patch
 Patch2:         0002-Disable-man-and-doc-from-gettext-runtime.patch
 Patch3:         0003-Disable-man-doc-and-examples-from-gettext-tools.patch
@@ -29,6 +28,7 @@ BuildRequires:  autoconf >= 2.62
 BuildRequires:  automake
 BuildRequires:  bison >= 3.0
 BuildRequires:  libtool
+BuildRequires:  xz
 
 BuildRequires:  gcc-c++
 
@@ -122,8 +122,10 @@ styling.
 echo %{version} | cut -d '+' -f 1 > .tarball-version
 cp .tarball-version .version
 cp ../archive.dir.tar.xz gettext-tools/misc
+mkdir -p libtextstyle/build-aux
+cp ../gnulib/build-aux/texinfo.tex libtextstyle/build-aux/
 
-GNULIB_SRCDIR=../gnulib/ ./autogen.sh
+GNULIB_SRCDIR=$(pwd)/../gnulib/ ./autogen.sh
 [ -f %{_datadir}/automake/depcomp ] && cp -f %{_datadir}/automake/{depcomp,ylwrap} .
 
 %configure --without-included-gettext \
