@@ -10,7 +10,7 @@
 %define enable_testing 0
 
 Name:           gettext
-Version:        0.21
+Version:        0.21.1
 Release:        1
 License:        GPLv3+ and LGPLv2+ and GFDL
 Summary:        GNU libraries and utilities for producing multi-lingual messages
@@ -74,7 +74,6 @@ gettext-devel for transition.
 # libgettextpo is GPLv3+
 License:        LGPLv2+ and GPLv3+
 Summary:        Development files for %{name}
-Group:          Development/Tools
 Requires:       %{name} = %{version}-%{release}
 Requires:       %{name}-libs = %{version}-%{release}
 Requires:       libtextstyle = %{version}-%{release}
@@ -92,7 +91,6 @@ want to add gettext support for your project.
 # libgettextpo is GPLv3+
 License:        LGPLv2+ and GPLv3+
 Summary:        Libraries for %{name}
-Group:          System/Libraries
 
 %description libs
 This package contains libraries used internationalization support.
@@ -128,7 +126,7 @@ cp ../gnulib/build-aux/texinfo.tex libtextstyle/build-aux/
 GNULIB_SRCDIR=$(pwd)/../gnulib/ ./autogen.sh
 [ -f %{_datadir}/automake/depcomp ] && cp -f %{_datadir}/automake/{depcomp,ylwrap} .
 
-%configure --without-included-gettext \
+%configure \
     --enable-nls \
     --disable-static \
     --enable-shared \

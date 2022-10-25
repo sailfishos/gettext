@@ -1,7 +1,7 @@
-From fc3dc69c8ae2bcc0d0690b69a6c6d1f7cad7dac3 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Matti Kosola <matti.kosola@jolla.com>
 Date: Thu, 5 Mar 2020 09:46:38 +0000
-Subject: [PATCH 2/5] Disable man and doc from gettext-runtime
+Subject: [PATCH] Disable man and doc from gettext-runtime
 
 Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/gettext-runtime/Makefile.am b/gettext-runtime/Makefile.am
-index 0a8e7d9d5..d7152602c 100644
+index 0a8e7d9d5ccc4ec2f41b408b0346963567983955..d7152602c5190d95d18031e52cba44724a10477d 100644
 --- a/gettext-runtime/Makefile.am
 +++ b/gettext-runtime/Makefile.am
 @@ -27,7 +27,7 @@ SUBDIR_libasprintf = libasprintf
@@ -21,6 +21,3 @@ index 0a8e7d9d5..d7152602c 100644
  
  EXTRA_DIST = BUGS
  
--- 
-2.25.0
-
