@@ -1,7 +1,7 @@
-From b1fa6119f15a3b46d98b2a25c27ee93463f56597 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Matti Kosola <matti.kosola@jolla.com>
 Date: Thu, 5 Mar 2020 09:48:52 +0000
-Subject: [PATCH 4/5] Disable doc from libtextstyle
+Subject: [PATCH] Disable doc from libtextstyle
 
 Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/libtextstyle/Makefile.am b/libtextstyle/Makefile.am
-index 5d9611343..e49e1033b 100644
+index 27d631b2f900ca09a9210eb8bade15bc702a0680..0f788f2068f1cf9b501ddbb7e94e36764f19d727 100644
 --- a/libtextstyle/Makefile.am
 +++ b/libtextstyle/Makefile.am
 @@ -20,7 +20,7 @@ AUTOMAKE_OPTIONS = 1.13 gnu no-dependencies
@@ -21,6 +21,3 @@ index 5d9611343..e49e1033b 100644
  
  EXTRA_DIST = \
    version.sh \
--- 
-2.25.0
-

@@ -1,7 +1,7 @@
-From 8197576b2b777f0702d7553dc0ec5983e87a113b Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Matti Kosola <matti.kosola@jolla.com>
 Date: Thu, 12 Mar 2020 06:41:09 +0000
-Subject: [PATCH 5/5] Disable man and doc from libasprintf
+Subject: [PATCH] Disable man and doc from libasprintf
 
 Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 15 deletions(-)
 
 diff --git a/gettext-runtime/libasprintf/Makefile.am b/gettext-runtime/libasprintf/Makefile.am
-index 4189ef1a1..917a761c6 100644
+index be78f68356b33c0e11ed64c5576a1d9b6b9504ba..6282d60dcdbb2ee2a89bacf3bc23d9350428bcde 100644
 --- a/gettext-runtime/libasprintf/Makefile.am
 +++ b/gettext-runtime/libasprintf/Makefile.am
-@@ -112,21 +112,6 @@ clean-local:
+@@ -121,21 +121,6 @@ clean-local:
  	rm -rf SunWS_cache
  
  
@@ -34,6 +34,3 @@ index 4189ef1a1..917a761c6 100644
  # We distribute only the HTML documentation.
  # The user can generate the others, via
  #   make autosprintf.ps
--- 
-2.25.0
-
