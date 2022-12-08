@@ -22,6 +22,7 @@ Patch2:         0002-Disable-man-and-doc-from-gettext-runtime.patch
 Patch3:         0003-Disable-man-doc-and-examples-from-gettext-tools.patch
 Patch4:         0004-Disable-doc-from-libtextstyle.patch
 Patch5:         0005-Disable-man-and-doc-from-libasprintf.patch
+Patch6:         0006-Generate-timestamp-in-.pot-files-from-SOURCE_DATE_EP.patch
 
 # Bootstrapping
 BuildRequires:  autoconf >= 2.62
