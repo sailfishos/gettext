@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@jolla.com>
+Date: Thu, 8 Dec 2022 21:26:05 +0200
+Subject: [PATCH] Generate timestamp in .pot files from SOURCE_DATE_EPOCH
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+From OpenSUSE
+
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@jolla.com>
+---
+ gettext-tools/src/xgettext.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/gettext-tools/src/xgettext.c b/gettext-tools/src/xgettext.c
+index 008360646dc180f92420b2cd7c052a4ba35148c5..8a8cb092d7a654ce4437fca60711e669bdc34efd 100644
+--- a/gettext-tools/src/xgettext.c
++++ b/gettext-tools/src/xgettext.c
+@@ -1991,6 +1991,9 @@ construct_header ()
+   char *msgstr;
+   char *comment;
+   static lex_pos_ty pos = { __FILE__, __LINE__ };
++  char *source_date_epoch;
++  unsigned long long epoch;
++  char *endptr;
+ 
+   if (package_name != NULL)
+     {
+@@ -2011,7 +2014,31 @@ the MSGID_BUGS_ADDRESS variable there; otherwise please\n\
+ specify an --msgid-bugs-address command line option.\n\
+ ")));
+ 
+-  time (&now);
++  source_date_epoch = getenv("SOURCE_DATE_EPOCH");
++  if (source_date_epoch) {
++   errno = 0;
++   epoch = strtoull(source_date_epoch, &endptr, 10);
++   if ((errno == ERANGE && (epoch == ULLONG_MAX || epoch == 0))
++     || (errno != 0 && epoch == 0)) {
++    fprintf(stderr, "Environment variable $SOURCE_DATE_EPOCH: strtoull: %s\n", strerror(errno));
++    exit(EXIT_FAILURE);
++   }
++   if (endptr == source_date_epoch) {
++    fprintf(stderr, "Environment variable $SOURCE_DATE_EPOCH: No digits were found: %s\n", endptr);
++    exit(EXIT_FAILURE);
++   }
++   if (*endptr != '\0') {
++    fprintf(stderr, "Environment variable $SOURCE_DATE_EPOCH: Trailing garbage: %s\n", endptr);
++    exit(EXIT_FAILURE);
++   }
++   if (epoch > ULONG_MAX) {
++    fprintf(stderr, "Environment variable $SOURCE_DATE_EPOCH: value must be smaller than or equal to %lu but was found to be: %llu \n", ULONG_MAX, epoch);
++    exit(EXIT_FAILURE);
++   }
++   now = epoch;
++  } else {
++   now = time(NULL);
++  }
+   timestring = po_strftime (&now);
+ 
+   msgstr = xasprintf ("\
