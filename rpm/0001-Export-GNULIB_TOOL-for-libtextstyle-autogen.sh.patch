@@ -9,10 +9,10 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/autogen.sh b/autogen.sh
-index b896c3f1e3a362d7f60f9eb4888543a5226b22ec..2568a2415f23d5fa44e16c8427ff7cdad9e0abb6 100755
+index 0aa68224ea01a586a2e43c2b9b6a30a65a8c6449..1cbf660d23672020a87ea0a4fe8290967b9216f2 100755
 --- a/autogen.sh
 +++ b/autogen.sh
-@@ -449,7 +449,7 @@ cd "$dir0"
+@@ -660,7 +660,7 @@ cd "$dir0"
  echo "$0: generating files in libtextstyle..."
  cd libtextstyle
  (if ! $skip_gnulib; then export GNULIB_SRCDIR; fi

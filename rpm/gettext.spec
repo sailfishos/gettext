@@ -10,7 +10,7 @@
 %define enable_testing 0
 
 Name:           gettext
-Version:        0.21.1
+Version:        0.26
 Release:        1
 License:        GPLv3+ and LGPLv2+ and GFDL
 Summary:        GNU libraries and utilities for producing multi-lingual messages
@@ -22,7 +22,6 @@ Patch2:         0002-Disable-man-and-doc-from-gettext-runtime.patch
 Patch3:         0003-Disable-man-doc-and-examples-from-gettext-tools.patch
 Patch4:         0004-Disable-doc-from-libtextstyle.patch
 Patch5:         0005-Disable-man-and-doc-from-libasprintf.patch
-Patch6:         0006-Generate-timestamp-in-.pot-files-from-SOURCE_DATE_EP.patch
 
 # Bootstrapping
 BuildRequires:  autoconf >= 2.62
@@ -121,6 +120,12 @@ styling.
 echo %{version} | cut -d '+' -f 1 > .tarball-version
 cp .tarball-version .version
 cp ../archive.dir.tar.xz gettext-tools/misc
+tar -xzf  -C gettext-tools ../tree-sitter-0.23.2.tar.gz
+tar -xzf  -C gettext-tools ../tree-sitter-d-0.8.2.tar.gz
+tar -xzf  -C gettext-tools ../tree-sitter-go-0.23.4.tar.gz
+tar -xzf  -C gettext-tools ../tree-sitter-rust-0.23.2.tar.gz
+tar -xzf  -C gettext-tools ../tree-sitter-typescript-0.23.2.tar.gz
+cp ../tree-sitter.cfg gettext-tools/
 mkdir -p libtextstyle/build-aux
 cp ../gnulib/build-aux/texinfo.tex libtextstyle/build-aux/
 
@@ -195,7 +200,6 @@ make check
 %postun -n libtextstyle-devel -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %license COPYING
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/its
@@ -204,7 +208,6 @@ make check
 %{_libdir}/%{name}/cldr-plurals
 
 %files devel -f %{name}.lang
-%defattr(-,root,root,-)
 %doc NEWS THANKS
 %doc COPYING gettext-tools/misc/DISCLAIM README
 %doc ChangeLog
@@ -252,7 +255,6 @@ make check
 # involve unneeded files. If you need to include a file in -libs, list
 # it here explicitly
 %files libs
-%defattr(-,root,root,-)
 # Files listed here should be of LGPL license only, refer to upstream
 # statement in PACKAGING file
 %doc AUTHORS gettext-runtime/BUGS

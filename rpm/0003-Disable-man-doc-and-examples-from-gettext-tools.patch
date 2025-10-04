@@ -9,15 +9,15 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/gettext-tools/Makefile.am b/gettext-tools/Makefile.am
-index 449a79754c8112dde536e5daba637b316c1eb229..6658e7ca66c6bd57dc8d3d81cad2a18bdbc8b721 100644
+index bafc917f48ed29fa94a0089646256fe26e04dd2d..401685b18ab99e0ddf06edbd3c84d6c520dabd14 100644
 --- a/gettext-tools/Makefile.am
 +++ b/gettext-tools/Makefile.am
 @@ -19,7 +19,7 @@
- AUTOMAKE_OPTIONS = 1.5 gnu no-dependencies
- ACLOCAL_AMFLAGS = -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
+ AUTOMAKE_OPTIONS = 1.5 gnu
+ ACLOCAL_AMFLAGS = -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4 -I tests/gnulib-m4
  
--SUBDIRS = intl gnulib-lib libgrep src libgettextpo po its projects styles emacs misc man m4 tests system-tests gnulib-tests examples doc
-+SUBDIRS = intl gnulib-lib libgrep src libgettextpo po its projects styles emacs misc m4 tests system-tests gnulib-tests
+-SUBDIRS = gnulib-lib libgrep src libgettextpo po its projects styles emacs misc man m4 tests system-tests gnulib-tests install-tests examples doc
++SUBDIRS = gnulib-lib libgrep src libgettextpo po its projects styles emacs misc m4 tests system-tests gnulib-tests install-tests examples
  
- EXTRA_DIST = misc/DISCLAIM
+ EXTRA_DIST = misc/disclaim-translations.txt
  MOSTLYCLEANFILES = core *.stackdump

@@ -9,15 +9,15 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/gettext-runtime/Makefile.am b/gettext-runtime/Makefile.am
-index 0a8e7d9d5ccc4ec2f41b408b0346963567983955..d7152602c5190d95d18031e52cba44724a10477d 100644
+index 18946894161f4d86f19cba12072a50ce6ae1fcac..6586dda67f34bc94d046fae4066fd5460a328b3c 100644
 --- a/gettext-runtime/Makefile.am
 +++ b/gettext-runtime/Makefile.am
-@@ -27,7 +27,7 @@ SUBDIR_libasprintf = libasprintf
+@@ -26,7 +26,7 @@ SUBDIR_libasprintf = libasprintf
  else
  SUBDIR_libasprintf =
  endif
--SUBDIRS = doc intl intl-java intl-csharp gnulib-lib $(SUBDIR_libasprintf) src po man m4 tests
-+SUBDIRS = intl intl-java intl-csharp gnulib-lib $(SUBDIR_libasprintf) src po m4 tests
+-SUBDIRS = doc intl intl-java intl-csharp intl-d intl-modula2 gnulib-lib $(SUBDIR_libasprintf) src po man m4 tests install-tests
++SUBDIRS = intl intl-java intl-csharp intl-d intl-modula2 gnulib-lib $(SUBDIR_libasprintf) src po m4 tests install-tests
  
  EXTRA_DIST = BUGS
  

@@ -9,10 +9,10 @@ Signed-off-by: Matti Kosola <matti.kosola@jolla.com>
  1 file changed, 15 deletions(-)
 
 diff --git a/gettext-runtime/libasprintf/Makefile.am b/gettext-runtime/libasprintf/Makefile.am
-index be78f68356b33c0e11ed64c5576a1d9b6b9504ba..6282d60dcdbb2ee2a89bacf3bc23d9350428bcde 100644
+index 6f9366fd0ef9c5decfc278d00aa333486bc004b7..dcb2e54c3b82e7a24aeaaa74ac54fb89d22e3d7f 100644
 --- a/gettext-runtime/libasprintf/Makefile.am
 +++ b/gettext-runtime/libasprintf/Makefile.am
-@@ -121,21 +121,6 @@ clean-local:
+@@ -132,21 +132,6 @@ clean-local:
  	rm -rf SunWS_cache
  
  
